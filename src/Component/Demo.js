@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "./Demo.css";
 import { useSelector } from 'react-redux';
-import { addUser,updateUser,deleteuser } from '../features/Users';
+import { addUser,updateUser,deleteuser,GetData } from '../features/Users';
 import {useDispatch} from "react-redux";
 import { useState } from 'react';
 
@@ -14,6 +14,10 @@ const Demo = () => {
   const [indentity,setIdentity] = useState("")
   const [profilename,setProfilename] = useState("")
   const [updateUsername,setUpdateUsername] = useState("")
+
+  useEffect(()=>{
+   dispatch(GetData())
+  },[dispatch])
 
   const Addinguser = (()=>{
     return(
@@ -32,18 +36,18 @@ const Demo = () => {
       
       <button onClick={Addinguser}> Add user</button>
       </div>
-  {UserList.map((item)=>{
+       {UserList.map(({username,id,name})=>{
     return(
-      <div key={item.id}>
-        <h2>{item.name}</h2>
-        <h3>{item.username}</h3>
+      <div key={id}>
+        <h2>{name}</h2>
+        <h3>{username}</h3>
         <input type="text" placeholder='Update username'
         onChange={(e)=>{setUpdateUsername(e.target.value)}}/>
         <button 
         onClick={()=>{
-          dispatch(updateUser({id:item.id, username:updateUsername}))}}>
+          dispatch(updateUser({id:id, username:updateUsername}))}}>
             Update Username</button>
-          <button onClick={()=>{dispatch(deleteuser({id:item.id}))}}>Delete user</button>
+          <button onClick={()=>{dispatch(deleteuser({id:id}))}}>Delete user</button>
      </div>
     )
   })}
