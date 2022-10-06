@@ -21,7 +21,7 @@ const Demo = () => {
 
   const Addinguser = (()=>{
     return(
-      dispatch(addUser({id:UserList[UserList.length-1].id+1, name:indentity, username:profilename }))
+      dispatch(addUser({id:Math.random(), name:indentity, username:profilename }))
     )
   })
   return (

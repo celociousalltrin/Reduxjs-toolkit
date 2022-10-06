@@ -1,20 +1,26 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from "yup";
+import {useState} from "react";
 
 const Form = () => {
+    // const Cont = [{id:1, name:"Celo"}, {id:2, name:"Aelo"}]
+    const [data, setData] = useState([])
+    console.log(data);
     const formik = useFormik({
         initialValues:{
   firstName:"",
   lastName:"",
   email:"",
     },
-    onSubmit:(cont)=>{
-        console.log(cont)
+    onSubmit:(cont, {resetForm})=>{
+       setData(cont)
+       resetForm({cont: ""})
     },
     validationSchema:yup.object({
         firstName:yup.string()
         .max(15, "Must be 15 chaaracters or less")
+        .min(4, "Must be 4 Characters or less")
         .required("Required"),
         lastName:yup.string()
         .max(10,"Must be 10 characters or less")
@@ -27,7 +33,7 @@ const Form = () => {
   return (
 <div>
 <form onSubmit={formik.handleSubmit}>
-
+-
     <input
     id="firstName"
     name='firstName'
@@ -64,8 +70,15 @@ const Form = () => {
     {formik.touched.email && formik.errors.email ?
     <p>{formik.errors.email}</p> : null}
     <button type="submit">Submit</button>
-
 </form>
+
+ {[data].map((item, index)=>{
+    return (
+        <div key={index}>
+      <h3>{item.email}</h3>
+        </div>
+    )
+ })}
 </div>
   )
 }
